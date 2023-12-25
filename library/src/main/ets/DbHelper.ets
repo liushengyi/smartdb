@@ -37,7 +37,8 @@ class DbHelper {
         await dbOpenHelper.onUpgrade(this.rdbStore, oldVersion, this.dbVersion)
         this.commit()
       }
-      preferences.put(dbVersionKey, this.dbVersion)
+      await preferences.put(dbVersionKey, this.dbVersion)
+      await preferences.flush()
     }
   }
 
