@@ -128,3 +128,7 @@ import appDB from '../AppDB';
 import { userDao } from '../UserDao'
 userDao.insert(100, "name100")
 ```
+
+### 后续计划
+- 插入获取rowId
+- 批量操作
