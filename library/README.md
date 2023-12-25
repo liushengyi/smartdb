@@ -13,7 +13,7 @@ ohpm install @ohos/smartdb --save
 ## 使用
 ### 1 创建UserDao
 ```ts
-import sql from "@ohos/smartdb"
+import sql from "smartdb"
 
 export class User {
   @sql.SqlColumn(sql.ColumnType.INTEGER)
@@ -123,8 +123,12 @@ import appDB from '../AppDB';
   }
 ```
 
-### 3 使用sql
+### 4 使用sql
 ```ets
 import { userDao } from '../UserDao'
 userDao.insert(100, "name100")
 ```
+
+### 后续计划
+- 插入获取rowId
+- 批量操作

@@ -1,4 +1,4 @@
-import sql from '@ohos/smartdb';
+import sql from 'smartdb';
 import { userDao } from './UserDao';
 import relationalStore from '@ohos.data.relationalStore';
 

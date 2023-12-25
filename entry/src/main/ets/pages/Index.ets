@@ -1,5 +1,5 @@
-import sql from '@ohos/smartdb'
-import Logger from '@ohos/smartdb/src/main/ets/Logger'
+import sql from 'smartdb'
+import Logger from 'smartdb/src/main/ets/Logger'
 import { userDao } from '../UserDao'
 
 @Entry

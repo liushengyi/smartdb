@@ -7,13 +7,13 @@
 ## 下载安装
 
 ```
-ohpm install @ohos/smartdb --save
+ohpm install smartdb --save
 ```
 
 ## 使用
 ### 1 创建UserDao
 ```ts
-import sql from "@ohos/smartdb"
+import sql from "smartdb"
 
 export class User {
   @sql.SqlColumn(sql.ColumnType.INTEGER)
@@ -82,7 +82,7 @@ export const userDao = new UserDao()
 ```
 ### 2 创建数据库管理
 ```ts
-import sql from '@ohos/smartdb';
+import sql from 'smartdb';
 import { userDao } from './UserDao';
 import relationalStore from '@ohos.data.relationalStore';
 

@@ -1,4 +1,4 @@
-import sql from "@ohos/smartdb"
+import sql from "smartdb"
 
 export class User {
   @sql.SqlColumn(sql.ColumnType.INTEGER)

@@ -6,7 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@ohos/smartdb": "file:../library"
+    "smartdb": "file:../library"
   }
 }
 
