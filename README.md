@@ -123,7 +123,7 @@ import appDB from '../AppDB';
   }
 ```
 
-### 3 使用sql
+### 4 使用sql
 ```ets
 import { userDao } from '../UserDao'
 userDao.insert(100, "name100")
