@@ -41,6 +41,11 @@ class UserDao {
     return sql.PromiseNull()
   }
 
+  @sql.SqlInsert("replace into db_user (id,name) values (#{user.id},#{user.name}) ")
+  insertUser(@sql.Param("user") user: User): Promise<void> {
+    return sql.PromiseNull()
+  }
+
   @sql.SqlQuery("select * from db_user where id=#{id}")
   @sql.ReturnType(User)
   findUser(@sql.Param("id") id: number): Promise<User> {

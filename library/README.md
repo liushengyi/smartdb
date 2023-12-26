@@ -7,7 +7,7 @@
 ## 下载安装
 
 ```
-ohpm install @ohos/smartdb --save
+ohpm install smartdb --save
 ```
 
 ## 使用
@@ -38,6 +38,11 @@ class UserDao {
 
   @sql.SqlInsert("replace into db_user (id,name) values (#{id},#{name}) ")
   insert(@sql.Param("id") id: number, @sql.Param("name") name: string): Promise<void> {
+    return sql.PromiseNull()
+  }
+
+  @sql.SqlInsert("replace into db_user (id,name) values (#{user.id},#{user.name}) ")
+  insertUser(@sql.Param("user") user: User): Promise<void> {
     return sql.PromiseNull()
   }
 
@@ -82,7 +87,7 @@ export const userDao = new UserDao()
 ```
 ### 2 创建数据库管理
 ```ts
-import sql from '@ohos/smartdb';
+import sql from 'smartdb';
 import { userDao } from './UserDao';
 import relationalStore from '@ohos.data.relationalStore';
 
