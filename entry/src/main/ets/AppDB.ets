@@ -1,12 +1,14 @@
 import sql from 'smartdb';
 import { userDao } from './UserDao';
 import relationalStore from '@ohos.data.relationalStore';
+import hilog from '@ohos.hilog';
 
 class AppDB {
   static DB_VERSION: number = 3
 
   initDb(context: Context) {
     sql.dbHelper.initDb(context, "test.db", AppDB.DB_VERSION, new AppDbOpenHelper())
+    sql.Logger.setLogLevel(hilog.LogLevel.DEBUG)
   }
 }
 
