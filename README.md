@@ -134,6 +134,19 @@ import { userDao } from '../UserDao'
 userDao.insert(100, "name100")
 ```
 
+## 5 支持事务
+```ets
+import sql from 'smartdb'
+import { User, userDao } from '../UserDao'
+
+@sql.Transactional()
+  async insertTr() {
+    await userDao.insert(1, "name1")
+    await userDao.insert(2, "name2")
+    throw new Error("插入错误")
+  }
+```
+
 ### 后续计划
 - 插入获取rowId
 - 批量操作
