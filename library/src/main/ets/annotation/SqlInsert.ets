@@ -14,8 +14,8 @@ export function SqlInsert(sql: string, genId?: {
   id: string
 }): MethodDecorator {
   return DbUtil.handleSql(sql, (newSql) => {
-    let resultSet: relationalStore.ResultSet = null
     return new Promise(async (resolve, reject) => {
+      let resultSet: relationalStore.ResultSet = null
       try {
         let rdbStore = await DbHelper.getRdbStore()
         await rdbStore.executeSql(newSql)
