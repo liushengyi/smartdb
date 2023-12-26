@@ -4,19 +4,16 @@ import DbUtil from '../DbUtil'
 
 export function Sql(sql: string): MethodDecorator {
   return DbUtil.handleSql(sql, (newSql) => {
-    return new Promise((resolve, reject) => {
-      DbHelper.getRdbStore().then((store) => {
-        store.executeSql(newSql).then(() => {
-          // @ts-ignore
-          resolve()
-        }).catch((e) => {
-          Logger.error(e)
-          reject(e)
-        })
-      }).catch((e) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let rdbStore = await DbHelper.getRdbStore()
+        await rdbStore.executeSql(newSql)
+        // @ts-ignore
+        resolve()
+      } catch (e) {
         Logger.error(e)
         reject(e)
-      })
+      }
     })
   })
 }

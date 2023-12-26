@@ -82,13 +82,18 @@ struct Index {
     sql.Logger.info("开始插入：" + this.insertId)
     await userDao.insert(this.insertId, "name" + this.insertId)
     sql.Logger.info("插入成功")
+
+    this.randomGenInsertId()
+    sql.Logger.info("开始插入：" + this.insertId)
+    let insertId2 = await userDao.insertReturnRowId("name" + this.insertId)
+    sql.Logger.info("插入成功:" + insertId2)
   }
 
   async insertUser() {
     this.randomGenInsertId()
     sql.Logger.info("开始插入：" + this.insertId)
-    await userDao.insertUser(new User(this.insertId, "name" + this.insertId))
-    sql.Logger.info("插入成功")
+    let insertId = await userDao.insertUser(new User(this.insertId, "name" + this.insertId))
+    sql.Logger.info("插入成功:" + insertId)
   }
 
   @sql.Transactional()

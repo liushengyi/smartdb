@@ -31,13 +31,18 @@ class UserDao {
   constructor() {
   }
 
-  @sql.Sql("create table if not exists db_user ( id INTEGER PRIMARY KEY ,name TEXT not null)")
+  @sql.Sql("create table if not exists db_user ( id INTEGER  PRIMARY KEY AUTOINCREMENT ,name TEXT not null)")
   createDb(): Promise<void> {
     return sql.PromiseNull()
   }
 
   @sql.SqlInsert("replace into db_user (id,name) values (#{id},#{name}) ")
   insert(@sql.Param("id") id: number, @sql.Param("name") name: string): Promise<void> {
+    return sql.PromiseNull()
+  }
+
+  @sql.SqlInsert("replace into db_user (name) values (#{name}) ",{ table: "db_user", id: "id" })
+  insertReturnRowId(@sql.Param("name") name: string): Promise<void> {
     return sql.PromiseNull()
   }
 
@@ -69,6 +74,7 @@ class UserDao {
   findAllIds(): Promise<Array<number>> {
     return sql.PromiseNull()
   }
+
   @sql.SqlQuery("select count(*) from db_user")
   @sql.ReturnType(Number)
   findAllCount(): Promise<Number> {
@@ -79,7 +85,6 @@ class UserDao {
   deleteAll(): Promise<void> {
     return sql.PromiseNull()
   }
-
 }
 
 export const userDao = new UserDao()

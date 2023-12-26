@@ -21,10 +21,10 @@ export default class DbUtil {
                 newSql = newSql.replace(`#{${paramName}}`, paramValue.toString())
               } else if (DbUtil.isObject(paramValue)) {
                 Object.keys(paramValue).forEach((property) => {
-                  let propertyValue=paramValue[`${property}`]
-                  if(DbUtil.isNumber(propertyValue) || DbUtil.isBool(propertyValue)){
+                  let propertyValue = paramValue[`${property}`]
+                  if (DbUtil.isNumber(propertyValue) || DbUtil.isBool(propertyValue)) {
                     newSql = newSql.replace(`#{${paramName}.${property}}`, propertyValue)
-                  }else{
+                  } else {
                     newSql = newSql.replace(`#{${paramName}.${property}}`, `'${propertyValue}'`)
                   }
                 })
@@ -41,37 +41,41 @@ export default class DbUtil {
   }
 
   static parseResult(resultSet: relationalStore.ResultSet, target, propertyKey): any {
-    let hasResult = resultSet.goToFirstRow()
-    let returnType = Reflect.getMetadata(DbUtil.RETURN_TYPE_KEY, target, propertyKey)
-    if (returnType == null) {
-      returnType = String
-    }
-
-    if (!hasResult) {
-      if (Array.isArray(returnType)) {
-        return []
-      } else {
-        return null;
+    try {
+      let hasResult = resultSet.goToFirstRow()
+      let returnType = Reflect.getMetadata(DbUtil.RETURN_TYPE_KEY, target, propertyKey)
+      if (returnType == null) {
+        returnType = String
       }
-    }
 
-    if (DbUtil.isArray(returnType)) {
-      let entryType = returnType[0]
-      let result = []
-      let basicType = DbUtil.isBasicType(entryType)
-      for (let i = 0; i < resultSet.rowCount; i++) {
-        if (basicType) {
-          result.push(DbUtil.readBasicType(resultSet, entryType))
+      if (!hasResult) {
+        if (Array.isArray(returnType)) {
+          return []
         } else {
-          result.push(DbUtil.readEntry(resultSet, entryType))
+          return null;
         }
-        resultSet.goToNextRow()
       }
-      return result
-    } else if (DbUtil.isBasicType(returnType)) {
-      return DbUtil.readBasicType(resultSet, returnType)
-    } else {
-      return DbUtil.readEntry(resultSet, returnType)
+
+      if (DbUtil.isArray(returnType)) {
+        let entryType = returnType[0]
+        let result = []
+        let basicType = DbUtil.isBasicType(entryType)
+        for (let i = 0; i < resultSet.rowCount; i++) {
+          if (basicType) {
+            result.push(DbUtil.readBasicType(resultSet, entryType))
+          } else {
+            result.push(DbUtil.readEntry(resultSet, entryType))
+          }
+          resultSet.goToNextRow()
+        }
+        return result
+      } else if (DbUtil.isBasicType(returnType)) {
+        return DbUtil.readBasicType(resultSet, returnType)
+      } else {
+        return DbUtil.readEntry(resultSet, returnType)
+      }
+    } finally {
+      resultSet.close()
     }
   }
 
