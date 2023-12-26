@@ -4,8 +4,7 @@ import { ColumnType } from './ColumnType'
 import "reflect-metadata"
 
 
-export default  class DbUtil {
-
+export default class DbUtil {
   static ENTRY_NAME = '_table'
   static COLUMN_TYPE = '_type'
   static RETURN_TYPE_KEY = 'design:returntype'
@@ -15,13 +14,22 @@ export default  class DbUtil {
       descriptor.value = function (...args) {
         let newSql = sql
         if (args.length > 0) {
-          args.forEach((value, index) => {
-            let param = Reflect.getMetadata(index, target, propertyKey)
-            if (param) {
-              if (DbUtil.isNumber(value) || DbUtil.isBool(value)) {
-                newSql = newSql.replace(`#{${param}}`, value.toString())
+          args.forEach((paramValue, index) => {
+            let paramName = Reflect.getMetadata(index, target, propertyKey)
+            if (paramName) {
+              if (DbUtil.isNumber(paramValue) || DbUtil.isBool(paramValue)) {
+                newSql = newSql.replace(`#{${paramName}}`, paramValue.toString())
+              } else if (DbUtil.isObject(paramValue)) {
+                Object.keys(paramValue).forEach((property) => {
+                  let propertyValue=paramValue[`${property}`]
+                  if(DbUtil.isNumber(propertyValue) || DbUtil.isBool(propertyValue)){
+                    newSql = newSql.replace(`#{${paramName}.${property}}`, propertyValue)
+                  }else{
+                    newSql = newSql.replace(`#{${paramName}.${property}}`, `'${propertyValue}'`)
+                  }
+                })
               } else {
-                newSql = newSql.replace(`#{${param}}`, `'${value}'`)
+                newSql = newSql.replace(`#{${paramName}}`, `'${paramValue}'`)
               }
             }
           })
@@ -125,6 +133,10 @@ export default  class DbUtil {
 
   private static isBool(entryType) {
     return typeof entryType === 'boolean' || (typeof entryType === 'function' && entryType.name === 'Boolean')
+  }
+
+  private static isObject(entryType) {
+    return typeof entryType === 'object'
   }
 }
 

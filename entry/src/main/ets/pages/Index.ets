@@ -1,5 +1,5 @@
 import sql from 'smartdb'
-import { userDao } from '../UserDao'
+import { User, userDao } from '../UserDao'
 
 @Entry
 @Component
@@ -12,6 +12,13 @@ struct Index {
         Button("插入数据").onClick(() => {
           try {
             this.insert()
+          } catch (e) {
+            sql.Logger.error(e)
+          }
+        })
+        Button("插入User").onClick(() => {
+          try {
+            this.insertUser()
           } catch (e) {
             sql.Logger.error(e)
           }
@@ -66,20 +73,31 @@ struct Index {
     }
   }
 
-  async insert() {
+  randomGenInsertId() {
     this.insertId = Math.floor(Math.random() * 100_000_100)
+  }
+
+  async insert() {
+    this.randomGenInsertId()
     sql.Logger.info("开始插入：" + this.insertId)
     await userDao.insert(this.insertId, "name" + this.insertId)
     sql.Logger.info("插入成功")
   }
 
+  async insertUser() {
+    this.randomGenInsertId()
+    sql.Logger.info("开始插入：" + this.insertId)
+    await userDao.insertUser(new User(this.insertId, "name" + this.insertId))
+    sql.Logger.info("插入成功")
+  }
+
   @sql.Transactional()
   async insertTr() {
-    this.insertId = Math.floor(Math.random() * 100_000_100)
+    this.randomGenInsertId()
     sql.Logger.info("开始插入：" + this.insertId)
     await userDao.insert(this.insertId, "name" + this.insertId)
 
-    this.insertId = Math.floor(Math.random() * 100_000_100)
+    this.randomGenInsertId()
     sql.Logger.info("开始插入2：" + this.insertId)
     await userDao.insert(this.insertId, "name" + this.insertId)
     throw new Error("插入错误")
