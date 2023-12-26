@@ -13,6 +13,8 @@ import { SqlQuery } from './src/main/ets/annotation/SqlQuery'
 import { SqlUpdate } from './src/main/ets/annotation/SqlUpdate'
 import { Transactional } from './src/main/ets/annotation/Transactional'
 
+import Logger from './src/main/ets/Logger'
+
 const sql = {
   dbHelper: DbHelper,
   DbOpenHelper:DbOpenHelper,
@@ -26,7 +28,8 @@ const sql = {
   SqlInsert: SqlInsert,
   SqlQuery: SqlQuery,
   SqlUpdate: SqlUpdate,
-  Transactional: Transactional
+  Transactional: Transactional,
+  Logger:Logger
 }
 
 export default sql
