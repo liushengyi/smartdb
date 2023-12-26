@@ -42,7 +42,7 @@ class UserDao {
   }
 
   @sql.SqlInsert("replace into db_user (name) values (#{name}) ",{ table: "db_user", id: "id" })
-  insertReturnRowId(@sql.Param("name") name: string): Promise<void> {
+  insertReturnRowId(@sql.Param("name") name: string): Promise<number> {
     return sql.PromiseNull()
   }
 
