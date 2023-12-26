@@ -77,7 +77,7 @@ class Logger {
   }
 
   private checkLogLevel(level: hilog.LogLevel): boolean {
-    return this.logLevel >= level
+    return level >= this.logLevel
   }
 }
 
