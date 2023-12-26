@@ -147,10 +147,6 @@ import { User, userDao } from '../UserDao'
   }
 ```
 
-### 后续计划
-- 插入获取rowId
-- 批量操作
-
 ## 开源协议
 
 本项目基于 [Apache License 2.0](https://github.com/liushengyi/smartdb/blob/master/library/LICENSE) ，请自由地享受和参与开源。
