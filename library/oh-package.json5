@@ -1,6 +1,6 @@
 {
-  "name": "smartdb",
-  "version": "1.0.6",
+  "name": "@liushengyi/smartdb",
+  "version": "1.0.8",
   "description": "SmartDB (Room 鸿蒙版本)持久性库在 SQLite 的基础上提供了一个抽象层，让用户能够在充分利用 SQLite 的强大功能的同时，获享更强健的数据库访问机制。",
   "main": "Index.ets",
   "author": "liushengyi",

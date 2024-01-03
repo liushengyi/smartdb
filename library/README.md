@@ -7,7 +7,7 @@
 ## 下载安装
 
 ```
-ohpm install smartdb --save
+ohpm install @liushengyi/smartdb --save
 ```
 
 ## 使用
