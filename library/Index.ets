@@ -4,7 +4,7 @@ import { ColumnType } from './src/main/ets/ColumnType'
 import { PromiseNull } from './src/main/ets/PromiseNull'
 
 import { Param } from './src/main/ets/annotation/Param'
-import { ReturnType } from './src/main/ets/annotation/ReturnType'
+import { ReturnType,ReturnListType } from './src/main/ets/annotation/ReturnType'
 import { Sql } from './src/main/ets/annotation/Sql'
 import { SqlColumn } from './src/main/ets/annotation/SqlColumn'
 import { SqlDelete } from './src/main/ets/annotation/SqlDelete'
@@ -22,6 +22,7 @@ const sql = {
   PromiseNull: PromiseNull,
   Param: Param,
   ReturnType: ReturnType,
+  ReturnListType:ReturnListType,
   Sql: Sql,
   SqlColumn: SqlColumn,
   SqlDelete: SqlDelete,
