@@ -3,6 +3,7 @@
 /local.properties
 /.idea
 **/build
+/oh-package-lock.json5
 /.hvigor
 .cxx
 /.clangd

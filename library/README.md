@@ -13,7 +13,7 @@ ohpm install @liushengyi/smartdb --save
 ## 使用
 ### 1 创建UserDao
 ```ts
-import sql from "smartdb"
+import sql from "@liushengyi/smartdb"
 
 export class User {
   @sql.SqlColumn(sql.ColumnType.INTEGER)
@@ -92,7 +92,7 @@ export const userDao = new UserDao()
 ```
 ### 2 创建数据库管理
 ```ts
-import sql from 'smartdb';
+import sql from '@liushengyi/smartdb';
 import { userDao } from './UserDao';
 import relationalStore from '@ohos.data.relationalStore';
 
@@ -141,7 +141,7 @@ userDao.insert(100, "name100")
 
 ## 5 支持事务
 ```ets
-import sql from 'smartdb'
+import sql from '@liushengyi/smartdb'
 import { User, userDao } from '../UserDao'
 
 @sql.Transactional()

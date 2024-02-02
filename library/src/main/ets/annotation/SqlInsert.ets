@@ -20,7 +20,7 @@ export function SqlInsert(sql: string, genId?: {
         let rdbStore = await DbHelper.getRdbStore()
         await rdbStore.executeSql(newSql)
         if (genId && genId.table && genId.id) {
-          let resultSet = await rdbStore.querySql(`SELECT max(${genId.id}) from ${genId.table}`)
+          resultSet = await rdbStore.querySql(`SELECT max(${genId.id}) from ${genId.table}`)
           resultSet.goToFirstRow()
           resolve(resultSet.getLong(0))
         } else {
