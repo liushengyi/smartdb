@@ -1,6 +1,6 @@
 import hilog from '@ohos.hilog';
 
-const DEFAULT_TAG: string = 'samrtdb';
+const DEFAULT_TAG: string = 'smartdb';
 
 class Logger {
   private domain: number;
