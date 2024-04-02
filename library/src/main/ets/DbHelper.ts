@@ -4,12 +4,12 @@ import dataPreferences from '@ohos.data.preferences';
 import { DbOpenHelper } from './DbOpenHelper';
 
 class DbHelper {
-  dbContext: Context;
+  dbContext: any;
   dbName: string = '';
   dbVersion: number = 0
   rdbStore: relationalStore.RdbStore
 
-  async initDb(context: Context, dbName: string, dbVersion: number, dbOpenHelper: DbOpenHelper) {
+  async initDb(context: any, dbName: string, dbVersion: number, dbOpenHelper: DbOpenHelper) {
     if (dbVersion <= 0) {
       throw new Error("dbVersion must > 0");
     }
