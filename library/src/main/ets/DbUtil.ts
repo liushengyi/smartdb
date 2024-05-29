@@ -18,18 +18,18 @@ export default class DbUtil {
             let paramName = Reflect.getMetadata(index, target, propertyKey)
             if (paramName) {
               if (DbUtil.isNumber(paramValue) || DbUtil.isBool(paramValue)) {
-                newSql = newSql.replace(`#{${paramName}}`, paramValue.toString())
+                newSql = DbUtil.replaceAllParam(newSql, paramName, paramValue.toString())
               } else if (DbUtil.isObject(paramValue)) {
                 Object.keys(paramValue).forEach((property) => {
                   let propertyValue = paramValue[`${property}`]
                   if (DbUtil.isNumber(propertyValue) || DbUtil.isBool(propertyValue)) {
-                    newSql = newSql.replace(`#{${paramName}.${property}}`, propertyValue)
+                    newSql = DbUtil.replaceAllParam(newSql, `${paramName}.${property}`, propertyValue)
                   } else {
-                    newSql = newSql.replace(`#{${paramName}.${property}}`, `'${propertyValue}'`)
+                    newSql = DbUtil.replaceAllParam(newSql, `${paramName}.${property}`, `'${propertyValue}'`)
                   }
                 })
               } else {
-                newSql = newSql.replace(`#{${paramName}}`, `'${paramValue}'`)
+                newSql = DbUtil.replaceAllParam(newSql, paramName, `'${paramValue}'`)
               }
             }
           })
@@ -38,6 +38,10 @@ export default class DbUtil {
         return result(newSql, target, propertyKey)
       }
     }
+  }
+
+  private static replaceAllParam(str: string, value: string, newValue: any) {
+    return str.replace(new RegExp(`#\\{${value}\\}`, "g"), newValue)
   }
 
   static parseResult(resultSet: relationalStore.ResultSet, target, propertyKey): any {
@@ -143,5 +147,3 @@ export default class DbUtil {
     return typeof entryType === 'object'
   }
 }
-
-
