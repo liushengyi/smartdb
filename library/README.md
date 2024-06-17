@@ -160,7 +160,7 @@ import { User, userDao } from '../UserDao'
   }
 ```
 
-## 5 支持多数据源
+## 6 支持多数据源
 
 - @sql.DbNameClass 支持整个class配置
 - @sql.DbName 支持单个method配置
