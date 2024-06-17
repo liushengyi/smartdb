@@ -1,4 +1,3 @@
-import DbHelper from '../DbHelper'
 import DbUtil from '../DbUtil'
 import Logger from '../Logger'
 import relationalStore from '@ohos.data.relationalStore'
@@ -13,11 +12,12 @@ export function SqlInsert(sql: string, genId?: {
   table: string,
   id: string
 }): MethodDecorator {
-  return DbUtil.handleSql(sql, (newSql) => {
+  return DbUtil.handleSql(sql, (newSql, target, propertyKey) => {
     return new Promise(async (resolve, reject) => {
       let resultSet: relationalStore.ResultSet = null
       try {
-        let rdbStore = await DbHelper.getRdbStore()
+        let dbHelper = DbUtil.getDbHelperByDecorator(target, propertyKey)
+        let rdbStore = await dbHelper.getRdbStore()
         await rdbStore.executeSql(newSql)
         if (genId && genId.table && genId.id) {
           resultSet = await rdbStore.querySql(`SELECT max(${genId.id}) from ${genId.table}`)

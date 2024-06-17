@@ -3,8 +3,8 @@ import hilog from '@ohos.hilog';
 const DEFAULT_TAG: string = 'smartdb';
 
 class Logger {
-  private domain: number;
-  private logLevel: hilog.LogLevel = hilog.LogLevel.DEBUG
+  domain: number;
+  logLevel: hilog.LogLevel = hilog.LogLevel.DEBUG
 
   constructor(domain: number = 0xFF00) {
     this.domain = domain;
@@ -76,7 +76,7 @@ class Logger {
     hilog.error(this.domain, tag, message.toString(), args);
   }
 
-  private checkLogLevel(level: hilog.LogLevel): boolean {
+  checkLogLevel(level: hilog.LogLevel): boolean {
     return level >= this.logLevel
   }
 }

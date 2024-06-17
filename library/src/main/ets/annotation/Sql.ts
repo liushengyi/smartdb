@@ -1,12 +1,12 @@
-import DbHelper from '../DbHelper'
 import Logger from '../Logger'
 import DbUtil from '../DbUtil'
 
 export function Sql(sql: string): MethodDecorator {
-  return DbUtil.handleSql(sql, (newSql) => {
+  return DbUtil.handleSql(sql, (newSql, target, propertyKey) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let rdbStore = await DbHelper.getRdbStore()
+        let dbHelper = DbUtil.getDbHelperByDecorator(target, propertyKey)
+        let rdbStore = await dbHelper.getRdbStore()
         await rdbStore.executeSql(newSql)
         // @ts-ignore
         resolve()

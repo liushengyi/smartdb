@@ -1,10 +1,9 @@
 import sql from 'smartdb'
-import { User, userDao } from '../UserDao'
-import router from '@ohos.router'
+import { User, userDao2 } from '../UserDao2'
 
 @Entry
 @Component
-struct Index {
+struct MultiDbPage {
   insertId: number = 2000
 
   build() {
@@ -35,12 +34,12 @@ struct Index {
 
       Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
         Button("查找单一数据").onClick(() => {
-          userDao.findUser(this.insertId).then((result) => {
+          userDao2.findUser(this.insertId).then((result) => {
             sql.Logger.info(JSON.stringify(result))
           })
         })
         Button("查找单一数据name").onClick(() => {
-          userDao.findUserName(this.insertId).then((result) => {
+          userDao2.findUserName(this.insertId).then((result) => {
             sql.Logger.info(JSON.stringify(result))
           })
         })
@@ -48,17 +47,17 @@ struct Index {
 
       Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
         Button("查找所有数据").onClick(() => {
-          userDao.findAll().then((result) => {
+          userDao2.findAll().then((result) => {
             sql.Logger.info(JSON.stringify(result))
           })
         })
         Button("查找所有数据id").onClick(() => {
-          userDao.findAllIds().then((result) => {
+          userDao2.findAllIds().then((result) => {
             sql.Logger.info(JSON.stringify(result))
           })
         })
         Button("查找所有数据count").onClick(() => {
-          userDao.findAllCount().then((result) => {
+          userDao2.findAllCount().then((result) => {
             sql.Logger.info(JSON.stringify(result))
           })
         })
@@ -66,15 +65,9 @@ struct Index {
 
       Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
         Button("删除所有数据").onClick(() => {
-          userDao.deleteAll().then((result) => {
+          userDao2.deleteAll().then((result) => {
             sql.Logger.info("删除成功")
           })
-        })
-      }.width('100%').margin({ bottom: '10vp' })
-
-      Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-        Button("多db测试").onClick(() => {
-          router.pushUrl({ url: "pages/MultiDbPage" })
         })
       }.width('100%').margin({ bottom: '10vp' })
     }
@@ -87,31 +80,32 @@ struct Index {
   async insert() {
     this.randomGenInsertId()
     sql.Logger.info("开始插入：" + this.insertId)
-    await userDao.insert(this.insertId, "name" + this.insertId)
+    await userDao2.insert(this.insertId, "name" + this.insertId)
     sql.Logger.info("插入成功")
 
     this.randomGenInsertId()
     sql.Logger.info("开始插入：" + this.insertId)
-    let insertId2 = await userDao.insertReturnRowId("name" + this.insertId)
+    let insertId2 = await userDao2.insertReturnRowId("name" + this.insertId)
     sql.Logger.info("插入成功:" + insertId2)
   }
 
   async insertUser() {
     this.randomGenInsertId()
     sql.Logger.info("开始插入：" + this.insertId)
-    let insertId = await userDao.insertUser(new User(this.insertId, "name" + this.insertId))
+    let insertId = await userDao2.insertUser(new User(this.insertId, "name" + this.insertId))
     sql.Logger.info("插入成功:" + insertId)
   }
 
   @sql.Transactional()
+  @sql.DbName("test2")
   async insertTr() {
     this.randomGenInsertId()
     sql.Logger.info("开始插入：" + this.insertId)
-    await userDao.insert(this.insertId, "name" + this.insertId)
+    await userDao2.insert(this.insertId, "name" + this.insertId)
 
     this.randomGenInsertId()
     sql.Logger.info("开始插入2：" + this.insertId)
-    await userDao.insert(this.insertId, "name" + this.insertId)
+    await userDao2.insert(this.insertId, "name" + this.insertId)
     throw new Error("插入错误")
   }
 }

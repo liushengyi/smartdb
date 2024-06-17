@@ -11,7 +11,9 @@ ohpm install @liushengyi/smartdb --save
 ```
 
 ## 使用
+
 ### 1 创建UserDao
+
 ```ts
 import sql from "@liushengyi/smartdb"
 
@@ -90,7 +92,9 @@ class UserDao {
 export const userDao = new UserDao()
 
 ```
+
 ### 2 创建数据库管理
+
 ```ts
 import sql from '@liushengyi/smartdb';
 import { userDao } from './UserDao';
@@ -124,7 +128,9 @@ class AppDbOpenHelper extends sql.DbOpenHelper {
 export default new AppDB()
 
 ```
+
 ### 3 UIAbility里初始化
+
 ```ets
 import appDB from '../AppDB';
 
@@ -134,12 +140,14 @@ import appDB from '../AppDB';
 ```
 
 ### 4 使用sql
+
 ```ets
 import { userDao } from '../UserDao'
 userDao.insert(100, "name100")
 ```
 
 ## 5 支持事务
+
 ```ets
 import sql from '@liushengyi/smartdb'
 import { User, userDao } from '../UserDao'
@@ -150,6 +158,36 @@ import { User, userDao } from '../UserDao'
     await userDao.insert(2, "name2")
     throw new Error("插入错误")
   }
+```
+
+## 5 支持多数据源
+
+- @sql.DbNameClass 支持整个class配置
+- @sql.DbName 支持单个method配置
+
+二者选择其一，同时配置优先使用@sql.DbName
+
+```ets
+ initDb(context: Context) {
+    sql.Logger.setLogLevel(hilog.LogLevel.DEBUG)
+    //初始化默认数据库
+    sql.dbHelper.initDb(context, "test.db", AppDB.DB_VERSION, new AppDbOpenHelper())
+    //初始化第二个数据库
+    sql.createDbHelper("test2").initDb(context, "test2.db", AppDB.DB_VERSION, new AppDbOpenHelper2())
+  }
+  
+@sql.DbNameClass("test2")
+class UserDao2 {
+  constructor() {
+  }
+
+  @sql.DbName("test2") //和@sql.DbNameClass选其一
+  @sql.SqlInsert("replace into db_user (id,name) values (#{id},#{name}) ")
+  insert(@sql.Param("id") id: number, @sql.Param("name") name: string): Promise<void> {
+    return sql.PromiseNull()
+  }
+}  
+  
 ```
 
 ## 开源协议

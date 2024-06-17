@@ -1,10 +1,13 @@
 import DbHelper from './src/main/ets/DbHelper'
+import { createDbHelper, getDbHelper } from './src/main/ets/DbHelper'
 import { DbOpenHelper } from './src/main/ets/DbOpenHelper'
 import { ColumnType } from './src/main/ets/ColumnType'
 import { PromiseNull } from './src/main/ets/PromiseNull'
 
+import { DbName } from './src/main/ets/annotation/DbName'
+import { DbNameClass } from './src/main/ets/annotation/DbNameClass'
 import { Param } from './src/main/ets/annotation/Param'
-import { ReturnType,ReturnListType } from './src/main/ets/annotation/ReturnType'
+import { ReturnType, ReturnListType } from './src/main/ets/annotation/ReturnType'
 import { Sql } from './src/main/ets/annotation/Sql'
 import { SqlColumn } from './src/main/ets/annotation/SqlColumn'
 import { SqlDelete } from './src/main/ets/annotation/SqlDelete'
@@ -17,12 +20,16 @@ import Logger from './src/main/ets/Logger'
 
 const sql = {
   dbHelper: DbHelper,
-  DbOpenHelper:DbOpenHelper,
+  createDbHelper: createDbHelper,
+  getDbHelper: getDbHelper,
+  DbOpenHelper: DbOpenHelper,
   ColumnType: ColumnType,
   PromiseNull: PromiseNull,
+  DbName:DbName,
+  DbNameClass:DbNameClass,
   Param: Param,
   ReturnType: ReturnType,
-  ReturnListType:ReturnListType,
+  ReturnListType: ReturnListType,
   Sql: Sql,
   SqlColumn: SqlColumn,
   SqlDelete: SqlDelete,
@@ -30,7 +37,7 @@ const sql = {
   SqlQuery: SqlQuery,
   SqlUpdate: SqlUpdate,
   Transactional: Transactional,
-  Logger:Logger
+  Logger: Logger
 }
 
 export default sql

@@ -3,23 +3,24 @@
  * 注解的方法必须是 async方法
  * @returns
  */
-import DbHelper from '../DbHelper'
 import Logger from '../Logger'
+import DbUtil from "../DbUtil"
 
 export function Transactional(): MethodDecorator {
   return (target, propertyKey, descriptor) => {
     let original = descriptor.value
     // @ts-ignore
     descriptor.value = async function (...args) {
-      DbHelper.beginTransaction()
+      let dbHelper = DbUtil.getDbHelperByDecorator(target, propertyKey)
+      dbHelper.beginTransaction()
       try {
         // @ts-ignore
         let result = await original.call(this, ...args);
-        DbHelper.commit()
+        dbHelper.commit()
         return result
       } catch (e) {
         Logger.error(e)
-        DbHelper.rollBack()
+        dbHelper.rollBack()
         throw e
       }
     }

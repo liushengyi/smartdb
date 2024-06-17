@@ -2,12 +2,14 @@ import Logger from './Logger'
 import relationalStore from '@ohos.data.relationalStore'
 import { ColumnType } from './ColumnType'
 import "reflect-metadata"
+import { DbHelper, getDbHelper } from './DbHelper'
 
 
 export default class DbUtil {
-  static ENTRY_NAME = '_table'
-  static COLUMN_TYPE = '_type'
-  static RETURN_TYPE_KEY = 'design:returntype'
+  static ENTRY_NAME = 'smartdb:table'
+  static COLUMN_TYPE = 'smartdb:type'
+  static RETURN_TYPE_KEY = 'smartdb:returntype'
+  static DB_NAME = 'smartdb:dbname'
 
   static handleSql(sql: string, result: (newSql, target, propertyKey) => Promise<any>) {
     return (target, propertyKey, descriptor) => {
@@ -34,7 +36,7 @@ export default class DbUtil {
             }
           })
         }
-        Logger.debug("%s.%s sql: %s", target.constructor.name, propertyKey, newSql)
+        Logger.debug(`${target.constructor.name}.${propertyKey} sql: ${newSql}`)
         return result(newSql, target, propertyKey)
       }
     }
@@ -42,6 +44,22 @@ export default class DbUtil {
 
   private static replaceAllParam(str: string, value: string, newValue: any) {
     return str.replace(new RegExp(`#\\{${value}\\}`, "g"), newValue)
+  }
+
+  static getDbHelperByDecorator(target, propertyKey): DbHelper {
+    let dbNameKey = Reflect.getMetadata(DbUtil.DB_NAME, target, propertyKey)
+    if (dbNameKey == null || dbNameKey == undefined) {
+      dbNameKey = Reflect.getMetadata(DbUtil.DB_NAME, target.constructor)
+    }
+    if (dbNameKey == null || dbNameKey == undefined) {
+      dbNameKey = "default"
+    }
+    Logger.debug(`当前数据库：${dbNameKey}`)
+    let dbHelper = getDbHelper(dbNameKey)
+    if (dbHelper == undefined) {
+      throw new Error(`请先初始化db: ${dbNameKey}`)
+    }
+    return dbHelper
   }
 
   static parseResult(resultSet: relationalStore.ResultSet, target, propertyKey): any {

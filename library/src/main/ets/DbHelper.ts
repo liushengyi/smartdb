@@ -3,7 +3,12 @@ import Logger from './Logger'
 import dataPreferences from '@ohos.data.preferences';
 import { DbOpenHelper } from './DbOpenHelper';
 
-class DbHelper {
+/**
+ * 存储所有的dbHelper
+ */
+const dbHelpers = {}
+
+export class DbHelper {
   dbContext: any;
   dbName: string = '';
   dbVersion: number = 0
@@ -40,6 +45,9 @@ class DbHelper {
       await preferences.put(dbVersionKey, this.dbVersion)
       await preferences.flush()
     }
+
+    //bind当前db
+    dbHelpers[dbName] = this
   }
 
   getRdbStore(): Promise<relationalStore.RdbStore> {
@@ -83,4 +91,33 @@ class DbHelper {
   }
 }
 
-export default new DbHelper()
+/**
+ * 默认dbHelper
+ */
+export const defaultDbHelper = createDbHelper("default")
+
+/**
+ * 创建更多dbHelper
+ * @param key 自定义key,需要配置DbName装饰器使用
+ * @returns
+ * @returns
+ */
+export function createDbHelper(key: string): DbHelper {
+  let dbHelper = new DbHelper()
+  dbHelpers[key]=dbHelper
+  return dbHelper
+}
+
+/**
+ * 获取dbHelper
+ * @param key 创建时传入的key或者数据名
+ * @returns
+ */
+export function getDbHelper(key: string): DbHelper | null {
+  return dbHelpers[key]
+}
+
+/**
+ * 保留,兼容旧版本
+ */
+export default defaultDbHelper
