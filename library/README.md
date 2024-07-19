@@ -87,6 +87,12 @@ class UserDao {
   deleteAll(): Promise<void> {
     return sql.PromiseNull()
   }
+  
+  @sql.SqlQuery("select * from db_user where #{cond} ")
+  @sql.ReturnListType(User)
+  searchUser(@sql.Param("cond",true) cond: string): Promise<Array<User>> {
+    return sql.PromiseNull()
+  }
 }
 
 export const userDao = new UserDao()
@@ -188,6 +194,19 @@ class UserDao2 {
   }
 }  
   
+```
+
+## 7 传递自定义条件
+@sql.Param("cond",true)
+```ets
+ @sql.SqlQuery("select * from db_user where #{cond} ")
+  @sql.ReturnListType(User)
+  searchUser(@sql.Param("cond",true) cond: string): Promise<Array<User>> {
+    return sql.PromiseNull()
+  }
+  
+ let result = await userDao.searchUser("name like 'id%'")
+ this.message = `${JSON.stringify(result)}`
 ```
 
 ## 开源协议

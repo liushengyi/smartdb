@@ -18,8 +18,9 @@ export default class DbUtil {
         if (args.length > 0) {
           args.forEach((paramValue, index) => {
             let paramName = Reflect.getMetadata(index, target, propertyKey)
+            let rawParam = Reflect.getMetadata(DbUtil.getRawMetadataKey(index), target, propertyKey)
             if (paramName) {
-              if (DbUtil.isNumber(paramValue) || DbUtil.isBool(paramValue)) {
+              if (DbUtil.isNumber(paramValue) || DbUtil.isBool(paramValue) || rawParam) {
                 newSql = DbUtil.replaceAllParam(newSql, paramName, paramValue.toString())
               } else if (DbUtil.isObject(paramValue)) {
                 Object.keys(paramValue).forEach((property) => {
@@ -139,6 +140,10 @@ export default class DbUtil {
       }
     })
     return entry
+  }
+
+  static getRawMetadataKey(parameterIndex) {
+    return `raw_${parameterIndex}`
   }
 
   private static isArray(entryType) {

@@ -70,6 +70,12 @@ class UserDao {
   deleteAll(): Promise<void> {
     return sql.PromiseNull()
   }
+
+  @sql.SqlQuery("select * from db_user where #{cond} ")
+  @sql.ReturnListType(User)
+  searchUser(@sql.Param("cond",true) cond: string): Promise<Array<User>> {
+    return sql.PromiseNull()
+  }
 }
 
 export const userDao = new UserDao()

@@ -65,12 +65,21 @@ struct Index {
       }.width('100%').margin({ bottom: '10vp' })
 
       Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
+        Button("自定义条件拼接").onClick(() => {
+          userDao.searchUser(" name like 'id%'").then((result) => {
+            sql.Logger.info(JSON.stringify(result))
+          })
+        })
+      }.width('100%').margin({ bottom: '10vp' })
+
+      Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
         Button("删除所有数据").onClick(() => {
           userDao.deleteAll().then((result) => {
             sql.Logger.info("删除成功")
           })
         })
       }.width('100%').margin({ bottom: '10vp' })
+
 
       Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
         Button("多db测试").onClick(() => {
