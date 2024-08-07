@@ -111,6 +111,8 @@ class AppDB {
 
   initDb(context: Context) {
     sql.dbHelper.initDb(context, "test.db", AppDB.DB_VERSION, new AppDbOpenHelper())
+    //配置RdbStore属性
+    //sql.dbHelper.initDbWithConfig
   }
 }
 
