@@ -15,7 +15,7 @@ export class DbHelper {
   rdbStore: relationalStore.RdbStore
 
   async initDb(context: any, dbName: string, dbVersion: number, dbOpenHelper: DbOpenHelper) {
-    this.initDbWithConfig(context, {
+    await this.initDbWithConfig(context, {
       name: dbName,
       securityLevel: relationalStore.SecurityLevel.S1
     }, dbVersion, dbOpenHelper)
