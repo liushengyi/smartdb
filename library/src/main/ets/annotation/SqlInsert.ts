@@ -12,13 +12,13 @@ export function SqlInsert(sql: string, genId?: {
   table: string,
   id: string
 }): MethodDecorator {
-  return DbUtil.handleSql(sql, (newSql, target, propertyKey) => {
+  return DbUtil.handleSql(sql, (newSql,bindArgs, target, propertyKey) => {
     return new Promise(async (resolve, reject) => {
       let resultSet: relationalStore.ResultSet = null
       try {
         let dbHelper = DbUtil.getDbHelperByDecorator(target, propertyKey)
         let rdbStore = await dbHelper.getRdbStore()
-        await rdbStore.executeSql(newSql)
+        await rdbStore.executeSql(newSql,bindArgs)
         if (genId && genId.table && genId.id) {
           resultSet = await rdbStore.querySql(`SELECT max(${genId.id}) from ${genId.table}`)
           resultSet.goToFirstRow()
