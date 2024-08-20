@@ -12,7 +12,7 @@ export default class DbUtil {
   static RETURN_TYPE_KEY = 'smartdb:returntype'
   static DB_NAME = 'smartdb:dbname'
 
-  static handleSql(sql: string, result: (newSql:string,bindArgs:Array<relationalStore.ValueType>, target, propertyKey) => Promise<any>) {
+  static handleSql(sql: string, result: (newSql: string, bindArgs: Array<relationalStore.ValueType>, target, propertyKey) => Promise<any>) {
     return (target, propertyKey, descriptor) => {
       descriptor.value = function (...args) {
         let newSql = sql
@@ -61,7 +61,7 @@ export default class DbUtil {
           }
         }
         Logger.debug(`${target.constructor.name}.${propertyKey} sql: ${newSql} bindArgs: ${bindArgs.toString()}`)
-        return result(newSql,bindArgs, target, propertyKey)
+        return result(newSql, bindArgs, target, propertyKey)
       }
     }
   }
@@ -80,10 +80,11 @@ export default class DbUtil {
     let match
     let index = 0
     while ((match = REGEX_PARAMS.exec(sql)) !== null) {
+      let m: string = match[0]
       let p: SqlParamInfo = {
         index: index,
-        propRaw: match[0],
-        prop: match[1]
+        propRaw: m,
+        prop: m.replace("#{", "").replace("}", "")
       }
       paramInfos.push(p)
       index++
