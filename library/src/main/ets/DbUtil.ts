@@ -23,6 +23,7 @@ export default class DbUtil {
 
           for (let i = 0; i < sqlParams.length; i++) {
             let sqlParam: SqlParamInfo = sqlParams[i]
+            let found = false
             for (let j = 0; j < params.length; j++) {
               let param: ParamInfo = params[j]
               let paramValue = param.value
@@ -32,31 +33,34 @@ export default class DbUtil {
                   let objKey = objKeys[k]
                   if (sqlParam.prop === `${param.name}.${objKey}`) {
                     bindArgs.push(paramValue[`${objKey}`])
-                    //替换第一个为"？"
+                    //替换为"？"
                     newSql = newSql.replace(sqlParam.propRaw, "?")
+                    found = true
                     break
                   }
                 }
-              } else {
-                //raw参数不使用bindArgs
-                if (param.raw) {
-                  continue
+                if (found) {
+                  break
                 }
+              } else {
                 if (sqlParam.prop === param.name) {
-                  bindArgs.push(param.value)
-                  //替换第一个为"？"
-                  newSql = newSql.replace(sqlParam.propRaw, "?")
+                  if (param.raw) {
+                    //raw参数不使用bindArgs,直接替换
+                    newSql = newSql.replace(sqlParam.propRaw, param.value.toString())
+                  } else {
+                    bindArgs.push(param.value)
+                    //替换为"？"
+                    newSql = newSql.replace(sqlParam.propRaw, "?")
+                  }
+                  found = true
                   break
                 }
               }
             }
-          }
-
-          //处理raw参数
-          for (let j = 0; j < params.length; j++) {
-            let param: ParamInfo = params[j]
-            if (param.raw) {
-              newSql = DbUtil.replaceAllParam(newSql, param.name, param.value.toString())
+            if (!found) {
+              bindArgs.push(null)
+              //替换第一个为"？"
+              newSql = newSql.replace(sqlParam.propRaw, "?")
             }
           }
         }
