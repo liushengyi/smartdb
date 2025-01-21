@@ -21,6 +21,13 @@ export class DbHelper {
     }, dbVersion, dbOpenHelper)
   }
 
+  async deleteDb(context: any, dbName: string) {
+    await relationalStore.deleteRdbStore(context, {
+      name: dbName,
+      securityLevel: relationalStore.SecurityLevel.S1
+    })
+  }
+
   async initDbWithConfig(context: any, storeConfig: relationalStore.StoreConfig, dbVersion: number, dbOpenHelper: DbOpenHelper) {
     if (dbVersion <= 0) {
       throw new Error("dbVersion must > 0");

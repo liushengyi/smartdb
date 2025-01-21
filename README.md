@@ -114,6 +114,10 @@ class AppDB {
     //配置RdbStore属性
     //sql.dbHelper.initDbWithConfig
   }
+
+  deleteBackupDb(context: Context) {
+    sql.getDbHelper("test").deleteDb(context, "test.db")
+  }
 }
 
 class AppDbOpenHelper extends sql.DbOpenHelper {
